@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_doctor/Booking/BookingPage.dart';
 import 'package:my_doctor/HomePage/Homepage.dart';
 import 'package:my_doctor/HomePage/Location/LocationPage.dart';
 import 'package:my_doctor/Profile/ModifyProfile.dart';
@@ -29,6 +30,10 @@ class _ProfilesettingsState extends State<Profilesettings> {
               if (value == 1) {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => LocationPage()));
+              }
+              if (value == 2) {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => BookingPage()));
               }
             });
           },

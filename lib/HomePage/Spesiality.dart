@@ -11,7 +11,7 @@ class Spesiality extends StatefulWidget {
 }
 
 class _SpesialityState extends State<Spesiality> {
-  double dem = 85;
+  double dem = 70;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,6 +22,7 @@ class _SpesialityState extends State<Spesiality> {
           (context)=> SpesialityPage(specialityname: widget.text,)));
         },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.all(10),
@@ -36,14 +37,16 @@ class _SpesialityState extends State<Spesiality> {
                 fit: BoxFit.contain,
               ),
             ),
-            Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Text(
-                  widget.text.length > 8
-                      ? '${widget.text.substring(0, 8)}...'
-                      : widget.text,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                )),
+            Expanded(
+              child: Container(
+                  margin: EdgeInsets.only(top: 5),
+                  child: Text(
+                    widget.text.length > 8
+                        ? '${widget.text.substring(0, 8)}...'
+                        : widget.text,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  )),
+            ),
           ],
         ),
       ),

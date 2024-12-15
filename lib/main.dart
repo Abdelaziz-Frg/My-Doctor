@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_doctor/HomePage/DoctorDetailsPage.dart';
 import 'package:my_doctor/HomePage/Homepage.dart';
 import 'package:my_doctor/HomePage/Location/LocationPage.dart';
+import 'package:my_doctor/HomePage/Location/YourLocation.dart';
 import 'package:my_doctor/Login/LoginPage.dart';
 import 'package:my_doctor/Login/Sinup.dart';
 import 'package:my_doctor/Login/Verification.dart';
@@ -10,6 +12,8 @@ import 'package:my_doctor/Profile/infoProfile.dart';
 void main() {
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -32,6 +36,11 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       // home: Profilesettings(),
       // home: LocationPage(),
+      // home: Yourlocation(),
+      // home: DoctorDetailsPage(name: "data",
+      // speciality: "data",
+      // city:  "New York",
+      // country: "USA",),
     );
   }
 }

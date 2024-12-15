@@ -1,11 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:location/location.dart';
+import 'package:my_doctor/Booking/BookingPage.dart';
 import 'package:my_doctor/HomePage/Homepage.dart';
 import 'package:my_doctor/Profile/ProfileSettings.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class LocationPage extends StatefulWidget {
@@ -26,10 +29,19 @@ class _LocationPageState extends State<LocationPage> {
   });
   final String orsApikey =
       "5b3ce3597851110001cf6248f99205f6cacb4e51b527a15d86c85c54";
+      StreamSubscription<LocationData>? locationSubscription; 
+      
+      
   @override
   void initState() {
     _getCurrentLocation();
     super.initState();
+  }
+  @override
+  void dispose() {
+    saveLocation(currentLocation!.latitude!, currentLocation!.longitude!);
+    locationSubscription?.cancel(); 
+    super.dispose();
   }
 
   int index = 1;
@@ -44,6 +56,10 @@ class _LocationPageState extends State<LocationPage> {
               if (value == 0) {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => HomePage()));
+              }
+              if (value == 2) {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => BookingPage()));
               }
               if (value == 4) {
                 Navigator.of(context).pushReplacement(
@@ -92,8 +108,12 @@ class _LocationPageState extends State<LocationPage> {
                   //     currentLocation!.latitude!, currentLocation!.longitude!),
 
                   // initialCenter: LatLng(36.901997, 7.74643),
-                  initialCenter: LatLng(
-                      currentLocation!.latitude!, currentLocation!.longitude!),
+
+                  // initialCenter: LatLng(
+                  //     currentLocation!.latitude!, currentLocation!.longitude!),
+                  initialCenter: currentLocation != null
+    ? LatLng(currentLocation!.latitude!, currentLocation!.longitude!)
+    : LatLng(36.901997, 7.74643),
                   initialZoom: 17.0,
                   onTap: (topPosition, point) => _addDistinationMarker(point)),
             ),
@@ -124,21 +144,23 @@ class _LocationPageState extends State<LocationPage> {
     try {
       var userLocation = await Location().getLocation();
       setState(() {
-        currentLocation = userLocation;
-        markers.add(Marker(
-            point: LatLng(userLocation.latitude!, userLocation.longitude!),
-            width: 80.0,
-            height: 80.0,
-            child: const Icon(
-              Icons.my_location,
-              color: Colors.blue,
-              size: 40,
-            )));
+        if (userLocation != null) {
+          markers.add(Marker(
+              point: LatLng(userLocation.latitude!, userLocation.longitude!),
+              width: 80.0,
+              height: 80.0,
+              child: const Icon(
+                Icons.my_location,
+                color: Colors.blue,
+                size: 40,
+              )));
+          currentLocation = userLocation;
+        }
       });
     } on Exception {
       currentLocation = null;
     }
-    location.onLocationChanged.listen((LocationData newLocation) {
+    locationSubscription = location.onLocationChanged.listen((LocationData newLocation) {
       setState(() {
         currentLocation = newLocation;
       });
@@ -174,7 +196,9 @@ class _LocationPageState extends State<LocationPage> {
 
   void _addDistinationMarker(LatLng point) {
     setState(() {
-      markers.clear();
+         if (markers.isNotEmpty) {
+        markers = [markers.first];
+      }
       markers.add(Marker(
           point: point,
           child: const Icon(
@@ -225,4 +249,11 @@ class _LocationPageState extends State<LocationPage> {
   double _toRadians(double degree) {
     return degree * pi / 180.0;
   }
+
+  Future<void> saveLocation(double latitude, double longitude) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setDouble('latitude', latitude);
+  prefs.setDouble('longitude', longitude);
+}
+  
 }

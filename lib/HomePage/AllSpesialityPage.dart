@@ -42,67 +42,27 @@ class _Content2State extends State<Content2> {
     double hei = MediaQuery.of(context).size.height;
     double wid = MediaQuery.of(context).size.height;
     return Container(
-      margin: EdgeInsets.all(20),
-      height: hei,
-      width: wid,
-      // child: GridView.builder(
-      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 4, // تحديد عدد الأعمدة ليكون 4
-      //     // mainAxisSpacing: 40, // المسافة بين العناصر عمودياً
-      //     // childAspectRatio: 1, // ضبط نسبة العرض إلى الارتفاع
-      //   ),
-      //   // itemCount: specialite.length,
-      //   itemCount: 5,
-      //   itemBuilder: (context, index) {
-      //     return Container(
-      //       margin: EdgeInsets.only(top: 40),
-      //       child: Spesiality(
-      //         imgUrl: specialite[index]['imgUrl'],
-      //         text: specialite[index]['sname'],
-      //       ),
-      //     );
-      //   },
-      // ),
-      child: GridView(gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: wid/8),
-      children: [
-        Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
+        margin: EdgeInsets.all(20),
+        height: hei,
+        width: wid,
+        child: Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: MediaQuery.of(context).size.width / 4, 
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10, 
+              childAspectRatio: 0.9, 
             ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-            Spesiality(
-              imgUrl: specialite[index]['imgUrl'],
-              text: specialite[index]['sname'],
-            ),
-      ],),
-    );
+            itemCount: specialite.length,
+            itemBuilder: (context, index) {
+              return Spesiality(
+                imgUrl: specialite[index]['imgUrl'],
+                text: specialite[index]['sname'],
+              );
+            },
+          ),
+        )
+
+        );
   }
 }
